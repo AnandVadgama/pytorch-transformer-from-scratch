@@ -11,8 +11,8 @@ def get_config():
         "src_lang": "english",
         "trg_lang": "hindi",
         "model_folder": "weights",
-        "model_basename": "tmodel_  ",
-        "preload": "19",
+        "model_basename": "tmodel_",
+        "preload": "29",
         "translation": "Bhoomi06/english-to-colloquial-hindi-dataset",
         "tokenizer_path": "tokenizer_{0}.json",
         "experiment_name": "runs/tmodel"
