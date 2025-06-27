@@ -37,15 +37,31 @@ This repository contains a PyTorch implementation of a Transformer model for Eng
 ## Model Architecture
 
 ```mermaid
-graph TD;
-  A["Input Sentence (English)"] --> B["Tokenizer (English)"];
-  B --> C["Input Embedding + Positional Encoding"];
-  C --> D["Encoder Stack"];
-  D --> E["Encoder Output"];
-  E --> F["Decoder Stack"];
-  F --> G["Output Embedding + Positional Encoding"];
-  G --> H["Projection Layer"];
-  H --> I["Colloquial Hindi Output"];
+flowchart TD
+    A["Input Sentence (English)"]
+    B["English Tokenizer (tokenizer_english.json)"]
+    C["Source Embedding + Positional Encoding"]
+    D["Encoder Stack (N layers)"]
+    E["Encoder Output"]
+    F["Target Sentence (Colloquial Hindi)"]
+    G["Hindi Tokenizer (tokenizer_hindi.json)"]
+    H["Target Embedding + Positional Encoding"]
+    I["Decoder Stack (N layers)"]
+    J["Encoder-Decoder Attention"]
+    K["Projection Layer"]
+    L["Output Tokens (Colloquial Hindi)"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    F --> G
+    G --> H
+    H --> I
+    E --> J
+    I --> J
+    J --> K
+    K --> L
 ```
 
 ## License
