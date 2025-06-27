@@ -12,9 +12,6 @@ This repository contains a PyTorch implementation of a Transformer model for Eng
 - `attention_visual.ipynb`: Jupyter notebook for visualizing attention maps.
 - `tokenizer_english.json`: Pretrained English tokenizer (WordLevel, JSON).
 - `tokenizer_hindi.json`: Pretrained Hindi tokenizer (WordLevel, JSON).
-- `.gitignore`: Git ignore rules for untracked/generated files.
-- `LICENSE`: MIT License.
-- `README.md`: This documentation.
 
 ## Getting Started
 
@@ -25,7 +22,7 @@ This repository contains a PyTorch implementation of a Transformer model for Eng
    ```
 2. Install dependencies:
    ```bash
-   pip install torch torchvision torchaudio datasets tokenizers tqdm
+   pip install -r requirements.txt
    ```
 3. Train the model:
    ```bash
