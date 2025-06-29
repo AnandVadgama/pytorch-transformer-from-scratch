@@ -2,6 +2,7 @@
 english-to-colloquial-hindi-dataset_weights/
 runs/
 wandb/
+weights/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
