@@ -29,7 +29,12 @@ This repository contains a PyTorch implementation of a Transformer model for Eng
    python train.py
    ```
 4. Run inference or visualize attention:
-   Open `inference.ipynb` or `attention_visual.ipynb` in Jupyter or Colab.
+   - Open `inference.ipynb` or `attention_visual.ipynb` in Jupyter or Colab.
+   - **Or run interactive inference from the terminal:**
+     ```bash
+     python inference.py
+     ```
+     The script will prompt you to enter a sentence (or index), choose a decoding method (greedy/beam), and set the beam size if needed. No command-line arguments are required.
 
 ## Model Architecture
 
