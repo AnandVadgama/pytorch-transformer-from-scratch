@@ -11,7 +11,7 @@ class InputEmbeddings(nn.Module):
         self.embedding = nn.Embedding(vocab_size, d_model)
 
     def forward(self, x):
-        return self.embedding(x) * math.sqrt(self.d_model)   # in original paper they says multiply by sqrt of d_model to embeddings
+        return self.embedding(x) * math.sqrt(self.d_model)   # in original paper they says multiply by sqrt of d_model to embeddings because without it magnitude of embedding would be too small compare to the positional encoding
 
 class PositionalEncoding(nn.Module):
 
@@ -25,11 +25,11 @@ class PositionalEncoding(nn.Module):
         pe = torch.zeros(seq_len, d_model)
         # create a vector of shape (seq_len, 1)
         position = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * ( -math.log(10000.0) / d_model))
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * ( -math.log(10000.0) / d_model)) # in here the torch.arange(0, dmodel, 2) is representing the frequencies of sin/cos pair so we use each continuous two dim as one frequency or in ther word a sin/cos pair 
 
-        # apply the sin to even position
+        # apply the sin to even dim
         pe[:,0::2] = torch.sin(position * div_term)
-        # apply the cos to odd position
+        # apply the cos to odd dim
         pe[:,1::2] = torch.cos(position * div_term)
 
         pe = pe.unsqueeze(0) # to add batch_size dim
@@ -45,6 +45,7 @@ class LayerNormalization(nn.Module):
     def __init__(self, eps: float = 10**-6) -> None:
         super().__init__()
         self.eps = eps
+        # we use this two params because sometimes the values between 0 and 1 would be too restrictive so we assign this two params so the network will learn to tune these params whenever its necessory
         self.alpha = nn.Parameter(torch.ones(1)) # multiplicative
         self.bias = nn.Parameter(torch.zeros(1)) # additive
 
@@ -138,7 +139,7 @@ class EncoderBlock(nn.Module):
 
     def forward(self, x, src_mask): # src_mask -> we use it becuase we don't want to padding interect with other values
 
-        x = self.residual_connection[0](x, lambda x: self.self_attention_block(x, x, x, src_mask))
+        x = self.residual_connection[0](x, lambda x: self.self_attention_block(x, x, x, src_mask)) # we use lambda because we want to pass normalized x instead of raw x
         x = self.residual_connection[1](x, self.feed_forward_block)
         return x
     
