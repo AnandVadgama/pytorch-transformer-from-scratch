@@ -13,6 +13,7 @@ class BilingualDataset(Dataset):
         self.src_lang = src_lang
         self.trg_lang = trg_lang
 
+        # in here we use list[] because instead of just gettin a scalar tensor shape= () we want a 1D tensor shape (1,) which is safer in bacth peocessing
         self.sos_token = torch.tensor([tokenizer_src.token_to_id('[SOS]')], dtype=torch.int64)
         self.eos_token = torch.tensor([tokenizer_src.token_to_id('[EOS]')], dtype=torch.int64)
         self.pad_token = torch.tensor([tokenizer_src.token_to_id('[PAD]')], dtype=torch.int64)
@@ -23,10 +24,10 @@ class BilingualDataset(Dataset):
     def __getitem__(self, index):
         src_target_pair = self.ds[index]
         src_text = src_target_pair[self.src_lang]
-        trg_text = src_target_pair[self.trg_lang]
+        tgt_text = src_target_pair[self.trg_lang]
 
-        enc_input_tokens = self.tokenizer_src.encode(src_text).ids
-        dec_input_tokens = self.tokenizer_src.encode(trg_text).ids
+        enc_input_tokens = self.tokenizer_src.encode(src_text).ids # .ids gives us token ids, not token strings
+        dec_input_tokens = self.tokenizer_src.encode(tgt_text).ids
 
         enc_num_pad_tokens = self.seq_len - len(enc_input_tokens) -2
         dec_num_pad_tokens = self.seq_len - len(dec_input_tokens) -1
@@ -34,7 +35,7 @@ class BilingualDataset(Dataset):
         if enc_num_pad_tokens < 0 or dec_num_pad_tokens < 0:
             raise ValueError("the sentence is too long")
         
-        # add sos and eos to sorce text
+        # add [SOS] + tokens + [EOS] + [PAD]d
         encoder_input = torch.cat(
             [
                 self.sos_token,
@@ -72,7 +73,7 @@ class BilingualDataset(Dataset):
             "decoder_mask": (decoder_input != self.pad_token).unsqueeze(0).unsqueeze(0).int() & causal_mask(decoder_input.size(0)), # (1, seq_len) & (1, seq_len, seq_len)
             "label": label, #(seq_len)
             "src_text": src_text,
-            "trg_text": trg_text
+            "tgt_text": tgt_text
         }
     
 def causal_mask(size):
