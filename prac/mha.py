@@ -88,7 +88,7 @@ class MultiHeadAttention(nn.Module):
     def forward(self, q, k, v, mask=None):
         """
         Forward pass of Multi-Head Attention.
-
+        
         Args:
             q, k, v: Input tensors (queries, keys, values) — shape: [batch, seq_len, d_model]
             mask: Optional attention mask — shape: broadcastable to [batch, heads, seq_len, seq_len]
